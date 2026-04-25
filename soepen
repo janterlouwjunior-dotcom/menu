@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .menu-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .menu-table td {
+    padding: 6px 0;
+  }
+
+  .menu-table td:last-child {
+    text-align: right;
+    white-space: nowrap;
+    padding-left: 20px;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="menu-table"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<script>
+const csvUrl = "PASTE_YOUR_GOOGLE_SHEETS_CSV_URL_HERE";
+
+Papa.parse(csvUrl, {
+  download: true,
+  header: true,
+  complete: function(results) {
+    let html = '<table class="menu-table"><tbody>';
+
+    results.data.forEach(row => {
+      if (!row.Dish || !row.Price) return;
+
+      html += `
+        <tr>
+          <td>${row.Dish}</td>
+          <td>${row.Price}</td>
+        </tr>
+      `;
+    });
+
+    html += "</tbody></table>";
+    document.getElementById("menu-table").innerHTML = html;
+  }
+});
+</script>
+
+</body>
+</html>
